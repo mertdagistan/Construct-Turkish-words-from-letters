@@ -1,6 +1,5 @@
+import { readFileSync } from "fs";
 import path from "path";
-const fs = require("fs");
-const readline = require("readline");
 
 export default async function handler(req, res) {
   // * Get Words With Query letters
@@ -44,23 +43,14 @@ export default async function handler(req, res) {
 
 async function get_words(kelime) {
   var result = [];
-  //Find the absolute path of the json directory
-  const jsonDirectory = path.join(process.cwd(), "data");
-  console.log("jsonDirectory",jsonDirectory)
-  //Read the json data file data.json
-  const fileStream =  fs.createReadStream(
-    jsonDirectory + "/kelimeler.txt",
-    "utf8"
-  );
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
-  });
 
+  const file = path.join(process.cwd(), "data", "kelimeler.json");
+  const json = await readFileSync(file, "utf8");
+  const list = JSON.parse(json);
   let harf_listesi = kelime.split("");
   var harfler = harf_listesi;
 
-  for await (const line of rl) {
+  list.forEach((line) => {
     // caz
     if (line.length > 2) {
       var letters = line.split("");
@@ -92,6 +82,6 @@ async function get_words(kelime) {
         // console.log(result);
       }
     }
-  }
+  });
   return result;
 }
