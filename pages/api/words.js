@@ -1,6 +1,6 @@
 import path from "path";
-import { promises as fs } from "fs";
-import readline from "readline";
+const fs = require("fs");
+const readline = require("readline");
 
 export default async function handler(req, res) {
   // * Get Words With Query letters
@@ -46,9 +46,10 @@ async function get_words(kelime) {
   var result = [];
   //Find the absolute path of the json directory
   const jsonDirectory = path.join(process.cwd(), "data");
+  console.log("jsonDirectory",jsonDirectory)
   //Read the json data file data.json
-  const fileStream = await fs.createReadStream(
-    jsonDirectory + "kelimeler.txt",
+  const fileStream =  fs.createReadStream(
+    jsonDirectory + "/kelimeler.txt",
     "utf8"
   );
   const rl = readline.createInterface({
