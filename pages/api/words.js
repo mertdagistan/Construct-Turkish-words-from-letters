@@ -44,7 +44,7 @@ export default async function handler(req, res) {
 async function get_words(kelime) {
   var result = [];
 
-  const fileStream = fs.createReadStream("data/kelimeler.txt");
+  const fileStream = fs.createReadStream("kelimeler.txt");
   const rl = readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity,
