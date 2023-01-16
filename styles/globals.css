@@ -12,3 +12,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.width-50 { 
+  width: Calc(50% - 10px);
+}
+
+@media  (max-width: 768px) {
+  .width-50 {
+    width: 100%;
+  }
+}
