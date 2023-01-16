@@ -12,7 +12,7 @@ function Words({ words, alert }) {
               "bg-gray-50": index % 2 == 0,
             })}
           >
-            <label>{k.length} harfli words</label>
+            <label>{k.length} harfli kelimeler</label>
 
             <div className="flex gap-5 flex-wrap mt-3">
               {k.values.length > 0 &&
