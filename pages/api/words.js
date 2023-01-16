@@ -13,7 +13,6 @@ export default async function handler(req, res) {
 
   // * Group by letter length of the word
   result.forEach((e) => {
-    console.log(e);
     /** 
      * * Model is null => First word
      * * if group word length is different
