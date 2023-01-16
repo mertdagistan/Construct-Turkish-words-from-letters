@@ -1,5 +1,6 @@
-const fs = require("fs");
-const readline = require("readline");
+import path from "path";
+import { promises as fs } from "fs";
+import readline from "readline";
 
 export default async function handler(req, res) {
   // * Get Words With Query letters
@@ -13,7 +14,7 @@ export default async function handler(req, res) {
 
   // * Group by letter length of the word
   result.forEach((e) => {
-    /** 
+    /**
      * * Model is null => First word
      * * if group word length is different
      */
@@ -43,8 +44,13 @@ export default async function handler(req, res) {
 
 async function get_words(kelime) {
   var result = [];
-
-  const fileStream = fs.createReadStream("kelimeler.txt");
+  //Find the absolute path of the json directory
+  const jsonDirectory = path.join(process.cwd(), "data");
+  //Read the json data file data.json
+  const fileStream = await fs.createReadStream(
+    jsonDirectory + "kelimeler.txt",
+    "utf8"
+  );
   const rl = readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity,
