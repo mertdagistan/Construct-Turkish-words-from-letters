@@ -2,9 +2,11 @@ import Head from "next/head";
 import { useState } from "react";
 import classnames from "classnames";
 import Words from "@/components/words";
+import Loading from "@/components/loading";
 
 export default function Home() {
   const [letters, setLetters] = useState("");
+  const [laoding, setLaoding] = useState(false);
   const [words, setWords] = useState([]);
   const [alert, setAlert] = useState(false);
   const handleChange = (event) => {
@@ -19,11 +21,19 @@ export default function Home() {
   };
 
   const get_words = async () => {
-    if (letters.length > 0) {
+    setLaoding(true);
+    if (letters.length > 2) {
       var response = await fetch("/api/words?letters=" + letters);
       var result = await response.json();
-      await setWords(result.data);
+      if (result.data.length > 1) await setWords(result.data);
+      else {
+        handle_alert("Lütfen farklı harfler giriniz!", "danger");
+      }
+    } else {
+      handle_alert("Lütfen 2'den fazla harf giriniz!", "danger");
     }
+
+    setLaoding(false);
   };
 
   const handle_alert = (message, type) => {
@@ -46,12 +56,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       {alert && (
         <div
           className={classnames({
             "absolute right-5 top-5 w-60 z-50 p-2 rounded-lg": true,
             "bg-green-600 text-white": alert.type === "success",
+            "bg-red-600 text-white": alert.type !== "success",
           })}
         >
           <div>
@@ -80,9 +90,10 @@ export default function Home() {
             Oluştur
           </button>
         </div>
-
-        {words.length > 0 && (
-         <Words words={words} alert={handle_alert}/>
+        {laoding === true ? (
+          <Loading />
+        ) : (
+          words.length > 0 && <Words words={words} alert={handle_alert} />
         )}
       </main>
     </>
